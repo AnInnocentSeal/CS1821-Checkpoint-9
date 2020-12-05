@@ -45,12 +45,13 @@ public class ExpenseSystem
     {
         ArrayList<ExpenseItem> objectlist  = new ArrayList<ExpenseItem>();
         boolean in_loop = true;
-        int menu = kbd.nextInt();
+        int menu = 0;
         
         while (in_loop)
         {
             System.out.println("Choose a menu point! \n1.Edit \n2.Analysis \n3.Exit");
             menu = kbd.nextInt();
+            
             switch(menu)
             {
                 case 1:
@@ -124,7 +125,7 @@ public class ExpenseSystem
 
     public static void analysisMode(ArrayList<ExpenseItem> objectlist)
     {
-        Dictionary<String, int> values = new Hashtable<String, int>();
+        HashMap values = new HashMap();
         boolean in_list = false;
         //creating dictionary for categories, boolean if a category is already documented or not
         
@@ -136,11 +137,11 @@ public class ExpenseSystem
             int amount = e.getAmount();
             String category = e.getCategory();
             
-            sumvalue += amount;
+            sumexpense += amount;
             
             if (values.containsKey(category))
             {
-                amount += values.get(category);
+                amount += (int)values.get(category);
                 values.remove(category);
                 values.put(category, amount);
             } //updating amount, removing old entry, adding updated entry
@@ -153,11 +154,11 @@ public class ExpenseSystem
             
         }
         
-        Set keys = values.keySet();
+        Set<String> keys = values.keySet();
         //iterating through the dictionary with keyset
         for(String key : keys) 
         {
-            System.out.println("Money spent on" + key + " : "+values.get(key) + "\n");
+            System.out.println("Money spent on " + key + " : "+values.get(key) + "\n");
             //printing out each category
         }
         
