@@ -4,7 +4,35 @@ import java.util.Dictionary;
 
 public class ExpenseItem
 {
-    //Mayson Gayle
+    private String description
+    private String category;
+    private int amount;
+    
+    public expenseItem(String description, String category, int amount){     
+        this.description = description;
+        this.category = category;
+        this.amount = amount;
+    }
+        
+    
+    public String getDescription(){
+        return description;
+    }
+    public String getCategory(){
+        return category;
+    }
+    public int getAmount(){
+        return amount;
+    }
+    public void setDescription(String description){
+        this.description = description;
+    }
+    public void setCategory(String category){
+        this.category = category;
+    }
+    public void setAmount(int amount){
+        this.amount = amount;
+    }   
 }
 
 public class ExpenseSystem
