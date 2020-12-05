@@ -1,14 +1,13 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Dictionary;
 
-public class ExpenseItem
+import java.util.*;
+
+class ExpenseItem
 {
-    private String description
+    private String description;
     private String category;
     private int amount;
     
-    public expenseItem(String description, String category, int amount){     
+    public ExpenseItem(String description, String category, int amount){
         this.description = description;
         this.category = category;
         this.amount = amount;
@@ -38,19 +37,24 @@ public class ExpenseItem
 public class ExpenseSystem
 {
     public static Scanner kbd = new Scanner(System.in);
+
     // initialize array list please Johnathan
     
     public static void main(String[] args)
+
     {
+        ArrayList<ExpenseItem> objectlist  = new ArrayList<ExpenseItem>();
         boolean in_loop = true;
         int menu = kbd.nextInt();
         
         while (in_loop)
         {
-            System.out.prinln("Choose a menu point! \n1.Edit \n2.Analysis \n3.Exit")
+            System.out.println("Choose a menu point! \n1.Edit \n2.Analysis \n3.Exit");
+            menu = kbd.nextInt();
             switch(menu)
             {
                 case 1:
+                    objectlist = editMode(objectlist, kbd);
                     //edit method here (Johnathan Dew)
                     break;
                 
@@ -65,13 +69,60 @@ public class ExpenseSystem
                     break;
                 
                 default:
-                    System.out.println("There is no such menu!")
+                    System.out.println("There is no such menu!");
                     break;
             }
         }
     }
-    
-    public static void analysisMode(ArrayList objectlist)
+    public static ArrayList<ExpenseItem> editMode(ArrayList objectlist, Scanner kbd)
+    {
+        System.out.println("Choose 1 for adding and 2 for deleteing");
+        int choice = kbd.nextInt();
+        switch(choice)
+        {
+            case 1:
+                objectlist = editAdd(objectlist, kbd);
+                break;
+            case 2:
+                objectlist = editDelete(objectlist, kbd);
+                break;
+            default:
+                System.out.println("No menu exists");
+                break;
+
+
+        }
+        return objectlist;
+        
+    }
+    public static ArrayList<ExpenseItem> editAdd(ArrayList<ExpenseItem>objectlist , Scanner kbd)
+    {
+        System.out.println("New item description");
+        String description = new String(kbd.next());
+        System.out.println("New item Category");
+        String category = new String(kbd.next());
+        System.out.println("New item amount");
+        int amount = kbd.nextInt();
+        objectlist.add(new ExpenseItem(description, category, amount));
+        return objectlist;
+    }
+
+    public static ArrayList<ExpenseItem> editDelete(ArrayList<ExpenseItem>objectlist, Scanner kbd)
+    {
+        int i = 0;
+        for(ExpenseItem e : objectlist){
+            System.out.println((i +1)+ ". "+ e.getDescription()+ ", "+ e.getCategory()+ ", "+ e.getAmount());
+            i++;
+
+        }
+        System.out.println("Select which item to delete");
+        int choice = kbd.nextInt();
+        objectlist.remove(choice);
+
+        return objectlist;
+    }
+
+    public static void analysisMode(ArrayList<ExpenseItem> objectlist)
     {
         Dictionary<String, int> values = new Hashtable<String, int>();
         boolean in_list = false;
@@ -79,11 +130,11 @@ public class ExpenseSystem
         
         int sumexpense = 0;
         //sum of expenses 
-        
-        for(int i = 0; i < objectlist.length; i++) //adding category or incrementing value
+        int i = 0;
+        for(ExpenseItem e : objectlist) //adding category or incrementing value
         {
-            int amount = getAmount(objectlist[i]);
-            String category = getCategory(objectlist[i]);
+            int amount = e.getAmount();
+            String category = e.getCategory();
             
             sumvalue += amount;
             
@@ -92,12 +143,13 @@ public class ExpenseSystem
                 amount += values.get(category);
                 values.remove(category);
                 values.put(category, amount);
-            } //updating amount, removing oldentry, adding updated entry
+            } //updating amount, removing old entry, adding updated entry
             
             else
             {
                 values.put(category, amount);
             }//adding new entry
+            i++;
             
         }
         
@@ -111,7 +163,7 @@ public class ExpenseSystem
         
         System.out.println("All money spent: " + sumexpense + "\n"); // all money spent
         
-        double average = ((double)sumexpense / objectlist.length);
+        double average = ((double)sumexpense / objectlist.size());
         System.out.println("Average spent: " + average + "\n");
         //average spent on an item
         
